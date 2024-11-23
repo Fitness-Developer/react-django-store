@@ -47,15 +47,22 @@ const Home = ({ items }) => {
       </div>
 
       <div className="cards">
-        {isLoading
-          ? Array.from({ length: 10 }, (_, index) => (
-              <div className="loader-card-container" key={index}>
-                <LoaderCard />
-              </div>
-            ))
-          : filteredItems.map((item) => (
-              <Card key={item.id} item={item} onLikeClick={likeClick} getClick={getClick} />
-            ))}
+        {isLoading ? (
+          Array.from({ length: 10 }, (_, index) => (
+            <div className="loader-card-container" key={index}>
+              <LoaderCard />
+            </div>
+          ))
+        ) : filteredItems.length > 0 ? (
+          filteredItems.map((item) => (
+            <Card key={item.id} item={item} onLikeClick={likeClick} getClick={getClick} />
+          ))
+        ) : (
+          <div className="nothing">
+            <img src="/img/gethome.png" alt="" />
+            <p>Такого товара нету :(</p>
+          </div>
+        )}
       </div>
     </section>
   );
