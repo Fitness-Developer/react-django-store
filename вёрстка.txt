@@ -1,0 +1,124 @@
+<div class="container">
+      <header class="header">
+        <div class="main-ico">
+          <img src="/img/main-ico.png" alt="" />
+          <h1>React-store</h1>
+        </div>
+        <input type="text" placeholder="Введите ваш запрос..."></input>
+        <div class="icons">
+          <img src="/img/like.png" alt="" />
+          <img src="/img/pack.png" alt="" />
+          <img src="/img/bought.png" alt="" />
+        </div>
+      </header>
+      {/* <section class="content">
+        <h1>Товары</h1>
+        <div class="sort">
+          <div class="category">Все</div>
+          <div class="category">Кроссовки</div>
+          <div class="category">Футболки</div>
+          <div class="category">Худи</div>
+        </div>
+        <div class="cards">
+          <div class="card item">
+            <img class="like" src="/img/like.png" alt="" />
+            <img src="/img/sneakers/sneak1.png" alt="" />
+            <div class="cardofitems">
+              <div class="card-name">
+                <p class="name-line">Nike dunk Hi Retro</p>
+                <p class="price-line">11999 p.</p>
+              </div>
+              <img src="/img/plus.png" alt="" />
+            </div>
+          </div>
+          <div class="card item">
+            <img class="like" src="/img/like.png" alt="" />
+            <img src="/img/sneakers/sneak2.png" alt="" />
+            <div class="cardofitems">
+              <div class="card-name">
+                <p class="name-line">Nike Air Max 270</p>
+                <p class="price-line">16999 p.</p>
+              </div>
+              <img src="/img/plus.png" alt="" />
+            </div>
+          </div>
+          <div class="card item">
+            <img class="like" src="/img/like.png" alt="" />
+            <img src="/img/sneakers/sneak3.png" alt="" />
+            <div class="cardofitems">
+              <div class="card-name">
+                <p class="name-line">Nike dunk Low</p>
+                <p class="price-line">13999 p.</p>
+              </div>
+              <img src="/img/plus.png" alt="" />
+            </div>
+          </div>
+          <div class="card item">
+            <img class="like" src="/img/like.png" alt="" />
+            <img src="/img/sneakers/sneak4.png" alt="" />
+            <div class="cardofitems">
+              <div class="card-name">
+                <p class="name-line">Nike Dunk Low Red</p>
+                <p class="price-line">15999 p.</p>
+              </div>
+              <img src="/img/plus.png" alt="" />
+            </div>
+          </div>
+          <div class="card item">
+            <img class="like" src="/img/like.png" alt="" />
+            <img src="/img/sneakers/sneak5.png" alt="" />
+            <div class="cardofitems">
+              <div class="card-name">
+                <p class="name-line">Nike Dunk Low Red</p>
+                <p class="price-line">15999 p.</p>
+              </div>
+              <img src="/img/plus.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </section> */}
+      {/* <section class="content"> 
+        <h1>Мои любимые</h1>
+        <div class="cards">
+          <div class="card">
+            <img class="like" src="/img/like2.png" alt="" />
+            <img src="/img/sneakers/sneak5.png" alt="" />
+            <div class="cardofitems">
+              <div class="card-name">
+                <p class="name-line">Nike Dunk Low Red</p>
+                <p class="price-line">15999 p.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
+      {/* <section class="content">
+        <h1>Мои товары</h1>
+        <div class="cards">
+          <div class="card">
+            <img src="/img/sneakers/sneak1.png" alt="" />
+            <div class="cardofitems">
+              <div class="card-name">
+                <p class="name-line">Nike dunk Hi Retro</p>
+                <p class="price-line">11999 p.</p>
+              </div>
+              <img class="to-get" src="/img/to-get.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </section> */}
+      {/* <section class="content">
+        <h1>Мои покупки</h1>
+        <div class="cards">
+          <div class="card">
+            <img src="/img/sneakers/sneak1.png" alt="" />
+            <div class="cardofitems">
+              <div class="card-name">
+                <p class="name-line">Nike dunk Hi Retro</p>
+                <p class="price-line">11999 p.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
+    </div>
