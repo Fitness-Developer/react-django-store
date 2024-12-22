@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import Favorites from './pages/Favorites';
 import Drawer from './pages/Drawer';
 import Order from './pages/Order';
+import Login from './account/Login';
+import Register from './account/Register';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -20,11 +22,27 @@ function App() {
     // Получаем данные из Django API
     const fetchData = async () => {
       try {
-        const [itemsResponse, likeResponse, drawerResponse, ordersResponse] = await Promise.all([
-          axios.get('http://127.0.0.1:8000/api/items/'),
-          axios.get('http://127.0.0.1:8000/api/likes/'),
-          axios.get('http://127.0.0.1:8000/api/drawer/'),
-          axios.get('http://127.0.0.1:8000/api/orders/'),
+        // Получаем данные о предметах без токена
+        const itemsResponse = await axios.get('http://127.0.0.1:8000/api/items/');
+
+        // Если требуется получить информацию о лайках и других данных, можно использовать токен
+        const token = localStorage.getItem('token');
+        const [likeResponse, drawerResponse, ordersResponse] = await Promise.all([
+          token
+            ? axios.get('http://127.0.0.1:8000/api/likes/', {
+                headers: { Authorization: `Bearer ${token}` },
+              })
+            : Promise.resolve({ data: [] }), // Если токена нет, возвращаем пустой массив
+          token
+            ? axios.get('http://127.0.0.1:8000/api/drawer/', {
+                headers: { Authorization: `Bearer ${token}` },
+              })
+            : Promise.resolve({ data: [] }), // Если токена нет, возвращаем пустой массив
+          token
+            ? axios.get('http://127.0.0.1:8000/api/orders/', {
+                headers: { Authorization: `Bearer ${token}` },
+              })
+            : Promise.resolve({ data: [] }), // Если токена нет, возвращаем пустой массив
         ]);
 
         const itemsData = itemsResponse.data.map((item) => ({
@@ -48,27 +66,36 @@ function App() {
   }, []);
 
   const likeClick = async (itemId) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found! User is not authenticated.');
+      return;
+    }
     try {
       const isLiked = favorites.some((like) => like.item === itemId);
       if (isLiked) {
-        // Удаляем лайк
         const likeToRemove = favorites.find((like) => like.item === itemId);
-        await axios.delete(`http://127.0.0.1:8000/api/likes/${likeToRemove.id}/`);
-
-        // Обновляем состояние favorites и items
+        await axios.delete(`http://127.0.0.1:8000/api/likes/${likeToRemove.id}/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setFavorites((prevFavorites) =>
           prevFavorites.filter((like) => like.id !== likeToRemove.id),
         );
         setItems((prevItems) =>
-          prevItems.map((item) =>
-            item.id === itemId ? { ...item, isLiked: !item.isLiked } : item,
-          ),
+          prevItems.map((item) => (item.id === itemId ? { ...item, isLiked: false } : item)),
         );
       } else {
-        // Добавляем лайк
-        const response = await axios.post('http://127.0.0.1:8000/api/likes/', { item: itemId });
-
-        // Обновляем состояние favorites и items
+        const response = await axios.post(
+          'http://127.0.0.1:8000/api/likes/',
+          { item: itemId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
         setFavorites((prevFavorites) => [...prevFavorites, response.data]);
         setItems((prevItems) =>
           prevItems.map((item) => (item.id === itemId ? { ...item, isLiked: true } : item)),
@@ -76,6 +103,9 @@ function App() {
       }
     } catch (error) {
       console.error('Ошибка обработки лайка:(', error);
+      if (error.response && error.response.status === 401) {
+        console.error('Unauthorized: Token is invalid or expired.');
+      }
     }
   };
   //   const addToDrawer = async (itemId) => {
@@ -109,11 +139,22 @@ function App() {
   //   };
 
   const getClick = async (itemId) => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      console.error('No token found!');
+      return;
+    }
+
     try {
       const isDrawer = drawer.some((get) => get.item === itemId);
       if (isDrawer) {
         const getToRemove = drawer.find((get) => get.item === itemId);
-        await axios.delete(`http://127.0.0.1:8000/api/drawer/${getToRemove.id}/`);
+        await axios.delete(`http://127.0.0.1:8000/api/drawer/${getToRemove.id}/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setDrawer((prevDrawer) => prevDrawer.filter((get) => get.id !== getToRemove.id));
         setItems((prevItems) =>
           prevItems.map((item) =>
@@ -121,7 +162,15 @@ function App() {
           ),
         );
       } else {
-        const response = await axios.post('http://127.0.0.1:8000/api/drawer/', { item: itemId });
+        const response = await axios.post(
+          'http://127.0.0.1:8000/api/drawer/',
+          { item: itemId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
         setDrawer((prevDrawer) => [...prevDrawer, response.data]);
         setItems((prevItems) =>
           prevItems.map((item) => (item.id === itemId ? { ...item, isDrawer: true } : item)),
@@ -132,19 +181,42 @@ function App() {
     }
   };
   const removeFromDrawer = async (id) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found!');
+      return;
+    }
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/drawer/${id}/`);
+      await axios.delete(`http://127.0.0.1:8000/api/drawer/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setDrawer((prevDrawer) => prevDrawer.filter((item) => item.id !== id));
     } catch (error) {
-      console.error('Ошибка при добавлении всех товаров в заказы:', error);
+      console.error('Ошибка при удалении из корзины:', error);
     }
   };
+
   const addToOrders = async (itemId) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found!');
+      return;
+    }
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/orders/', { item: itemId });
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/orders/',
+        { item: itemId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       setOrders((prevOrders) => [...prevOrders, response.data]);
       setDrawer((prevDrawer) => {
-        return prevDrawer.filter((item) => item.id !== itemId); // Убедитесь, что здесь используется id элемента из drawer
+        return prevDrawer.filter((item) => item.id !== itemId);
       });
     } catch (error) {
       console.error('Ошибка добавления в заказы:(', error);
@@ -185,6 +257,8 @@ function App() {
             <Route path="/Favorites" element={<Favorites favorites={favorites} />} />
             <Route path="/Drawer" element={<Drawer drawer={drawer} />} />
             <Route path="/Order" element={<Order orders={orders} />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Register" element={<Register />} />
           </Routes>
         </div>
       </BrowserRouter>

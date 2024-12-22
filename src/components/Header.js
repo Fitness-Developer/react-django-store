@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../index.scss';
 import { Link } from 'react-router-dom';
 import { useCard } from '../hooks/useCard';
@@ -11,6 +11,13 @@ const Header = () => {
   //   setSearchTerm(e.target.value);
   //   onSearch(e.target.value); // Передаем значение поиска в родительский компонент
   // };
+
+  const token = localStorage.getItem('token');
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
+  };
   return (
     <header className="header">
       <div className="main-ico">
@@ -21,16 +28,30 @@ const Header = () => {
       </div>
 
       <div className="icons">
-        <Link to="/Drawer" style={{ textDecoration: 'none', color: '#333' }}>
-          <span>{totalPrice} руб.</span>
-          <img src="/img/pack.png" alt="" />
-        </Link>
-        <Link to="/Favorites">
-          <img src="/img/like.png" alt="" />
-        </Link>
-        <Link to="/Order">
-          <img src="/img/bought.png" alt="" />
-        </Link>
+        {!token ? (
+          <>
+            <Link to="/Login">
+              <button>Login</button>
+            </Link>
+            <Link to="/Register">
+              <button>Register</button>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/Drawer" style={{ textDecoration: 'none', color: '#333' }}>
+              <span>{totalPrice} руб.</span>
+              <img src="/img/pack.png" alt="" />
+            </Link>
+            <Link to="/Favorites">
+              <img src="/img/like.png" alt="" />
+            </Link>
+            <Link to="/Order">
+              <img src="/img/bought.png" alt="" />
+            </Link>
+            <button onClick={handleLogout}>Logout</button>
+          </>
+        )}
       </div>
     </header>
   );

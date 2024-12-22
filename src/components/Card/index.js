@@ -12,7 +12,22 @@ function Card({
   noLike2,
   noPlus2,
 }) {
+  const token = localStorage.getItem('token');
   const timeoutRef = useRef(null);
+  const handleLikeClick = (itemId) => {
+    if (token) {
+      onLikeClick(itemId);
+    } else {
+      alert('Войдите или зарегистрируйтесь');
+    }
+  };
+  const handlePlusClick = (itemId) => {
+    if (token) {
+      getClick(itemId);
+    } else {
+      alert('Войдите или зарегистрируйтесь');
+    }
+  };
   return (
     <div className="card item">
       {noLike ? (
@@ -23,7 +38,7 @@ function Card({
             className="like"
             src={item.isLiked ? '/img/like2.png' : '/img/like.png'}
             alt=""
-            onClick={() => onLikeClick(item.id)}
+            onClick={() => handleLikeClick(item.id)}
           />
         )
       )}
@@ -52,7 +67,7 @@ function Card({
               className="plus"
               src={item.isDrawer ? '/img/get.png' : '/img/plus.png'}
               alt=""
-              onClick={() => getClick(item.id)}
+              onClick={() => handlePlusClick(item.id)}
             />
           )
         )}
