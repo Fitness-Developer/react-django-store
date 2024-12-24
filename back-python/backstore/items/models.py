@@ -1,7 +1,8 @@
 from django.db import models
 from django.db import transaction
-
+from django.contrib.auth.models import User
 class Items(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     price = models.IntegerField()
     image = models.ImageField(upload_to="img/store/", blank=True)
@@ -10,6 +11,7 @@ class Items(models.Model):
         return self.title
 
 class Likes(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Items, on_delete=models.CASCADE) # Связь с моделью Items
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -25,9 +27,10 @@ class Likes(models.Model):
             super().save(*args, **kwargs)  # Сохраняем объект
 
     def __str__(self):
-        return f"лайкнул {self.item}"
+        return f"User {self.user} liked {self.item}"
 
 class Drawer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Items, on_delete=models.CASCADE)  # Связь с моделью Items
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -43,9 +46,10 @@ class Drawer(models.Model):
             super().save(*args, **kwargs)  # Сохраняем объект
 
     def __str__(self):
-        return f"добавил {self.item}"
+        return f"User {self.user} added {self.item} to drawer"
 
 class Orders(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Items, on_delete=models.CASCADE)  # Связь с моделью Items
     created_at = models.DateTimeField(auto_now_add=True)
     quantity = models.PositiveIntegerField(default=1)
@@ -61,4 +65,4 @@ class Orders(models.Model):
             super().save(*args, **kwargs)  # Сохраняем объект
 
     def __str__(self):
-        return f"Заказ: {self.item} (Количество: {self.quantity})"
+        return f"User {self.user} ordered {self.item} (Quantity: {self.quantity})"

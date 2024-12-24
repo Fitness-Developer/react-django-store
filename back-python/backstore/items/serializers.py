@@ -11,13 +11,16 @@ class LikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Likes
         fields = '__all__'
+        read_only_fields = ['user']
 
 class DrawerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Drawer
         fields = '__all__'
+        read_only_fields = ['user']
 
 class OrdersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Orders
         fields = '__all__'
+        read_only_fields = ['user']

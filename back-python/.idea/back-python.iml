@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/backstore" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/backstore/backstore" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/backstore/items" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/backstore/account" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.11" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

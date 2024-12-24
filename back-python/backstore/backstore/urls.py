@@ -28,7 +28,9 @@ router.register('likes', LikesViewSet, basename='likes')
 router.register('drawer', DrawerViewSet, basename='drawer')
 router.register('orders', OrdersViewSet, basename='orders')
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/account/', include('account.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
