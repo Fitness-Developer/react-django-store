@@ -1,0 +1,3 @@
+   [submodule "react-store"]
+       path = react-store
+       url = https://github.com/Fitness-Developer/react-store.git
