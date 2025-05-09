@@ -1,2 +1,3 @@
-venv/
 node_modules/
+back-python/venv/
+back-python/.idea/
